@@ -1,17 +1,28 @@
 use crate::Terminal;
-use std::io::{self, stdout, Write,};
-use termion::raw::IntoRawMode;
 use termion::event::Key;
-use termion::input::TermRead; 
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 const EDITOR_NAME: &str = "Sona editor"; 
+
+pub struct Position {
+  x: usize,
+  y: usize
+}
+
 pub struct Editor {
   should_quit: bool,
-  terminal: Terminal
+  terminal: Terminal,
+  cursor_position: Position
 }
 
 impl Editor {
+  pub fn default() -> Self {
+    Self { 
+      should_quit: false,
+      terminal: Terminal::default().expect("Failed to initialize the terminal."),
+      cursor_position: Position {x: 0, y: 0}
+     }
+  }
 
   pub fn run(&mut self) {    
     loop {
@@ -76,12 +87,7 @@ impl Editor {
     }
   }
 
-  pub fn default() -> Self {
-    Self { 
-      should_quit: false,
-      terminal: Terminal::default().expect("Failed to initialize the terminal.")
-     }
-  }
+  
 }
 
 fn die(e: &std::io::Error) {
