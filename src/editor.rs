@@ -4,7 +4,8 @@ use termion::raw::IntoRawMode;
 use termion::event::Key;
 use termion::input::TermRead; 
 
-
+const VERSION: &str = env!("CARGO_PKG_VERSION");
+const EDITOR_NAME: &str = "Sona editor"; 
 pub struct Editor {
   should_quit: bool,
   terminal: Terminal
@@ -53,8 +54,24 @@ impl Editor {
     Terminal::flush()
   }
 
+  fn draw_welcome_message(&self) {
+    let mut welcome_message = format!("{} -- {}", EDITOR_NAME, VERSION);
+    let width = self.terminal.size().width as usize;
+    let len = welcome_message.len();
+    let padding = width.saturating_sub(len) / 2;
+    let spaces = " ".repeat(padding.saturating_sub(1));
+    welcome_message = format!("~{}{}", spaces, welcome_message); 
+    welcome_message.truncate(width);
+    println!("{}\r", welcome_message);
+  }
+
   fn draw_rows(&self) {
-    for _ in 0..self.terminal.size().height - 1 {
+    let height = self.terminal.size().height;
+    for row in 0..height - 1 {
+      Terminal::clear_current_line();
+      if (row == height / 3) {
+        self.draw_welcome_message();
+      }
       println!("~\r");
     }
   }

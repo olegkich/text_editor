@@ -56,6 +56,10 @@ impl Terminal {
     print!("{}", termion::cursor::Hide);
   }
 
+  pub fn clear_current_line() {
+    print!("{}", termion::clear::CurrentLine);
+  }
+
   pub fn size(&self) -> &Size {
     &self.size
   }
