@@ -1,14 +1,14 @@
-mod editor;
-mod terminal;
-mod row;
 mod document;
+mod editor;
+mod row;
+mod terminal;
 
-use editor::Editor;
-pub use terminal::Terminal;
-pub use editor::Position;
 pub use document::Document;
+use editor::Editor;
+pub use editor::Position;
 pub use row::Row;
+pub use terminal::Terminal;
 
 fn main() {
-	Editor::default().run();
+    Editor::default().run();
 }
